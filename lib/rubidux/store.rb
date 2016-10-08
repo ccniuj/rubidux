@@ -6,9 +6,9 @@ module Rubidux
     attr_accessor :dispatch
     attr_accessor :subscribe
 
-    def initialize(reducer, preload_state, enhancer)
+    def initialize(reducer, preload_state, enhancer = nil)
       raise "Expect reducer to be a Proc." if reducer.class.to_s != 'Proc'
-      enhancer(Rebidux::Store)(reducer, preload_state) if enhancer
+      enhancer(Rebidux::Store).(reducer, preload_state) if enhancer
       @state = preload_state || {}
       @listeners = []
       @reducer = reducer
@@ -20,8 +20,8 @@ module Rubidux
 
     def _dispatch
       -> (action) {
-        raise "Expect action to have key 'type'." if action['type'].nil?
-        @state = reducer(@state, action)
+        raise "Expect action to have key 'type'." if action[:type].nil?
+        @state = @reducer.(@state, action)
         @listeners.each(&:call)
         action
       }

@@ -4,7 +4,7 @@ module Rubidux
       -> (**middleware_api) {
         -> (_next) {
           -> (action) {
-            block.call**middleware_api, action)
+            block.call(action, **middleware_api)
             _next(action)
           }
         }
@@ -14,13 +14,13 @@ module Rubidux
     def self.apply_middleware(middlewares)
       -> (create_store) {
         -> (reducer, preload_state, enhancer) {
-          store = create_store(reducer, preload_state, enhancer)
+          store = create_store.new(reducer, preload_state, enhancer)
           middleware_api = {
             state: store.get_state,
             dispatch: -> (action) { store.dispatch(action) }
           }
           chain = middlewares.map { |middleware| middleware.(middleware_api) }
-          store.dispatch = Util.compose(*chain)(store.dispatch)
+          store.dispatch = Util.compose(*chain).(store.dispatch)
           store
         }
       }
