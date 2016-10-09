@@ -25,7 +25,7 @@ Reducers are functions that take state and action as arguments and return a new 
 
 ```ruby
 r1 = -> (state, action) {
-  state = { a: 0, b: 0 } unless state
+  state ||= { a: 0, b: 0 }
 
   case action[:type]
   when 'a_plus_one'
@@ -38,7 +38,7 @@ r1 = -> (state, action) {
 }
 
 r2 = -> (state, action) {
-  state = { c: 0, d: 0 } unless state
+  state ||= { c: 0, d: 0 }
 
   case action[:type]
   when 'c_plus_one'
