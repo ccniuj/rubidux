@@ -1,10 +1,10 @@
 module Rubidux
   class Store
-    attr_accessor :state
-    attr_accessor :reducer
-    attr_accessor :listeners
-    attr_accessor :dispatch
-    attr_accessor :subscribe
+    attr_reader :state
+    attr_reader :reducer
+    attr_reader :listeners
+    attr_reader :dispatch
+    attr_reader :subscribe
 
     def initialize(reducer, preload_state, enhancer = nil)
       raise ArgumentError.new("Expect reducer to be a Proc.") unless reducer.is_a? Proc
@@ -36,4 +36,12 @@ module Rubidux
       }
     end
   end
+
+  private
+
+  attr_writer :state
+  attr_writer :reducer
+  attr_writer :listeners
+  attr_writer :dispatch
+  attr_writer :subscribe
 end
