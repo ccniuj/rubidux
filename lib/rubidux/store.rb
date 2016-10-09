@@ -7,20 +7,21 @@ module Rubidux
     attr_accessor :subscribe
 
     def initialize(reducer, preload_state, enhancer = nil)
-      raise "Expect reducer to be a Proc." if reducer.class.to_s != 'Proc'
-      enhancer(Rebidux::Store).(reducer, preload_state) if enhancer
+      raise ArgumentError.new("Expect reducer to be a Proc.") unless reducer.is_a? Proc
       @state = preload_state || {}
       @listeners = []
       @reducer = reducer
       @dispatch = _dispatch
       @subscribe = _subscribe
+
+      @dispatch = enhancer.(@state, @dispatch) if enhancer
     end
 
     private
 
     def _dispatch
       -> (action) {
-        raise "Expect action to have key 'type'." if action[:type].nil?
+        raise ArgumentError.new("Expect action to have key 'type'.") unless action[:type]
         @state = @reducer.(@state, action)
         @listeners.each(&:call)
         action
@@ -29,7 +30,7 @@ module Rubidux
 
     def _subscribe
       -> (listener) {
-        raise "Expect listener to be a proc." if listener.class.to_s != 'Proc'
+        raise ArgumentError.new("Expect listener to be a Proc.") unless listener.is_a? Proc
         @listeners.push listener
         -> { @listeners.delete listener }
       }

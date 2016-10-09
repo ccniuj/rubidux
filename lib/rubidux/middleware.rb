@@ -5,24 +5,20 @@ module Rubidux
         -> (_next) {
           -> (action) {
             block.call(action, **middleware_api)
-            _next(action)
+            _next.(action)
           }
         }
       }
     end
 
-    def self.apply_middleware(middlewares)
-      -> (create_store) {
-        -> (reducer, preload_state, enhancer) {
-          store = create_store.new(reducer, preload_state, enhancer)
-          middleware_api = {
-            state: store.get_state,
-            dispatch: -> (action) { store.dispatch(action) }
-          }
-          chain = middlewares.map { |middleware| middleware.(middleware_api) }
-          store.dispatch = Util.compose(*chain).(store.dispatch)
-          store
+    def self.apply_middleware(*middlewares)
+      -> (state, dispatch) {
+        middleware_api = {
+          state: state,
+          dispatch: -> (action) { dispatch.(action) }
         }
+        chain = middlewares.map { |middleware| middleware.(middleware_api) }
+        new_dispatch = Rebidux::Util.compose(*chain).(dispatch)
       }
     end
   end
