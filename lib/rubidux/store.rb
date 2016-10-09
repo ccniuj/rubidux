@@ -14,7 +14,7 @@ module Rubidux
       @dispatch = _dispatch
       @subscribe = _subscribe
 
-      @dispatch = enhancer.(@state, @dispatch) if enhancer
+      @dispatch = enhancer.(-> { @state }, @dispatch) if enhancer
     end
 
     private

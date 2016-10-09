@@ -12,9 +12,9 @@ module Rubidux
     end
 
     def self.apply_middleware(*middlewares)
-      -> (state, dispatch) {
+      -> (get_state, dispatch) {
         middleware_api = {
-          state: state,
+          get_state: get_state,
           dispatch: -> (action) { dispatch.(action) }
         }
         chain = middlewares.map { |middleware| middleware.(middleware_api) }
