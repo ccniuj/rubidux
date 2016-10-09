@@ -81,7 +81,7 @@ enhancer = Rubidux::Middleware.apply m1, m2
 You can initialize a new store instance:
 
 ```ruby
-store = Rubidux::Store.new rc3, {}, enhancer
+store = Rubidux::Store.new reducer, prestate, enhancer
 ```
 
 And subscribe a listener via `subscribe`:
