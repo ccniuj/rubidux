@@ -5,5 +5,4 @@ require "rubidux/middleware"
 require "rubidux/util"
 
 module Rubidux
-  # Your code goes here...
 end

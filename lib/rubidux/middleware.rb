@@ -11,7 +11,7 @@ module Rubidux
       }
     end
 
-    def self.apply_middleware(*middlewares)
+    def self.apply(*middlewares)
       -> (get_state, dispatch) {
         middleware_api = {
           get_state: get_state,
