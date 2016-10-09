@@ -61,12 +61,14 @@ Rubidux::Reducer.combine(r1: r1, r2: r2)
 You can make a middleware via `init`:
 
 ```ruby
-m1 = Rubidux::Middleware.init { |action, **middleware_api|
-  puts "#{action} in middleware 1" 
+m1 = Rubidux::Middleware.init { |_next, action, **middleware_api|
+  puts "#{action} in middleware 1"
+  _next.(action)
 }
 
-m2 = Rubidux::Middleware.init { |action, **middleware_api|
+m2 = Rubidux::Middleware.init { |_next, action, **middleware_api|
   puts "#{middleware_api[:get_state].()} in middleware 2"
+  _next.(action)
 }
 ```
 
