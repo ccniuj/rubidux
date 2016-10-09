@@ -1,8 +1,6 @@
 # Rubidux
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rubidux`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Rubidux is a tiny Ruby framework inspired by [Redux](https://github.com/reactjs/redux)
 
 ## Installation
 
@@ -22,15 +20,83 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Rubidux::Reducer
+Reducers are functions that take state and action as arguments and return a new state. So you can have a reducer like this:
 
-## Development
+```ruby
+r1 = -> (state, action) {
+  state = { a: 0, b: 0 } unless state
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+  case action[:type]
+  when 'a_plus_one'
+    { a: state[:a]+1, b: state[:b] }
+  when 'b_plus_one'
+    { a: state[:a], b: state[:b]+1 }
+  else
+    state
+  end
+}
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+r2 = -> (state, action) {
+  state = { c: 0, d: 0 } unless state
+
+  case action[:type]
+  when 'c_plus_one'
+    { c: state[:c]+1, d: state[:d] }
+  when 'd_plus_one'
+    { c: state[:c], d: state[:d]+1 }
+  else
+    state
+  end
+}
+```
+
+And you can combine reducers via `conbine`:
+
+```ruby
+Rubidux::Reducer.combine(r1: r1, r2: r2)
+```
+
+### Rubidux::Middleware
+You can make a middleware via `init`:
+
+```ruby
+m1 = Rubidux::Middleware.init { |action, **middleware_api|
+  puts "#{action} in middleware 1" 
+}
+
+m2 = Rubidux::Middleware.init { |action, **middleware_api|
+  puts "#{middleware_api[:get_state].()} in middleware 2"
+}
+```
+
+And you can apply these middlewares via `apply`:
+
+```ruby
+enhancer = Rubidux::Middleware.apply m1, m2
+```
+
+### Rubidux::Store
+
+You can initialize a new store instance:
+
+```ruby
+store = Rubidux::Store.new rc3, {}, enhancer
+```
+
+And subscribe a listener via `subscribe`:
+
+```ruby
+unsubscribe_function = store.subscribe.(->{puts 'foo'})
+unsubscribe_function.() # => This will unsubscribe listener
+```
+
+Most importantly, you can dispatch an action via `dispatch`:
+
+```ruby
+store.dispatch.({type: 'a_plus_one'})
+```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rubidux.
-
+Bug reports and pull requests are welcome on GitHub at [here](https://github.com/davidjuin0519/rubidux).
