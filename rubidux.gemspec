@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "A tiny ruby framework inspired by Redux"
   spec.description   = "A tiny ruby framework inspired by Redux"
   spec.homepage      = "https://github.com/davidjuin0519/rubidux"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
