@@ -1,6 +1,6 @@
 # Rubidux
 
-Rubidux is a tiny Ruby framework inspired by [Redux](https://github.com/reactjs/redux)
+Rubidux is a tiny state management library inspired by [Redux](https://github.com/reactjs/redux)
 
 ## Installation
 
