@@ -4,7 +4,7 @@ module Rubidux
       -> (**middleware_api) {
         -> (_next) {
           -> (action) {
-            block.call(_next, action, **middleware_api)
+            block.(_next, action, **middleware_api)
           }
         }
       }
