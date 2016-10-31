@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/davidjuin0519/rubidux.svg?branch=master)](https://travis-ci.org/davidjuin0519/rubidux.svg?branch=master)
+
 # Rubidux
 
 Rubidux is a tiny state management library inspired by [Redux](https://github.com/reactjs/redux)
