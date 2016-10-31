@@ -3,7 +3,11 @@ module Rubidux
     def self.combine(**reducers)
       -> (state, action) {
         state ||= {}
-        Hash[reducers.map { |key, reducer| [key, reducer.(state[key], action)] }]
+        reducers.
+          lazy.
+          select { |key, reducer| reducer.is_a? Proc }.
+          map    { |key, reducer| [key, reducer.(state[key], action)] }.
+          to_h
       }
     end
   end
