@@ -1,24 +1,30 @@
 module Rubidux
-  class Middleware
-    def self.init(&block)
-      -> (**middleware_api) {
-        -> (_next) {
-          -> (action) {
-            block.(_next, action, **middleware_api)
+  module Middleware
+    def create
+      -> fn {
+        -> **middleware_api {
+          -> _next {
+            -> action {
+              fn.(_next, action, **middleware_api)
+            }
           }
         }
       }
     end
 
-    def self.apply(*middlewares)
-      -> (get_state, dispatch) {
-        middleware_api = {
-          get_state: get_state,
-          dispatch: -> (action) { dispatch.(action) }
+    def apply
+      -> *middlewares {
+        -> (get_state, dispatch) {
+          middleware_api = {
+            get_state: get_state,
+            dispatch: dispatch
+          }
+          chain = middlewares.map { |middleware| middleware.(middleware_api) }
+          new_dispatch = Rebidux::Util.compose(*chain).(dispatch)
         }
-        chain = middlewares.map { |middleware| middleware.(middleware_api) }
-        new_dispatch = Rebidux::Util.compose(*chain).(dispatch)
       }
     end
+
+    module_function :create, :apply
   end
 end
