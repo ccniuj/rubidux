@@ -17,7 +17,7 @@ module Rubidux
         -> (get_state, dispatch) {
           middleware_api = {
             get_state: get_state,
-            dispatch: dispatch
+            dispatch: -> action { new_dispatch.(action) }
           }
           chain = middlewares.map { |middleware| middleware.(middleware_api) }
           new_dispatch = Rebidux::Util.compose.(*chain).(dispatch)
