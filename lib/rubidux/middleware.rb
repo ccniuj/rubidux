@@ -20,7 +20,7 @@ module Rubidux
             dispatch: dispatch
           }
           chain = middlewares.map { |middleware| middleware.(middleware_api) }
-          new_dispatch = Rebidux::Util.compose(*chain).(dispatch)
+          new_dispatch = Rebidux::Util.compose.(*chain).(dispatch)
         }
       }
     end
