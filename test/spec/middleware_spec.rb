@@ -1,7 +1,5 @@
 require "test_helper"
-require "helpers/reducers"
 require "helpers/middlewares"
-require "pry"
 
 describe Rubidux::Middleware do
   describe "create" do

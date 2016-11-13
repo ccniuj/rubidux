@@ -1,11 +1,13 @@
+require "helpers/actions"
+
 module Reducers
   R_AB = -> (state, action) {
-    state ||= { a: 0, b: 0 }
-
     case action[:type]
-    when 'a_plus_one'
+    when :INITIALIZE
+      { a: 0, b: 0 }
+    when Actions::A_PLUS_ONE
       { a: state[:a]+1, b: state[:b] }
-    when 'b_plus_one'
+    when Actions::B_PLUS_ONE
       { a: state[:a], b: state[:b]+1 }
     else
       state
@@ -13,12 +15,12 @@ module Reducers
   }
 
   R_CD = -> (state, action) {
-    state ||= { c: 0, d: 0 }
-
     case action[:type]
-    when 'c_plus_one'
+    when :INITIALIZE
+      { c: 0, d: 0 }
+    when Actions::C_PLUS_ONE
       { c: state[:c]+1, d: state[:d] }
-    when 'd_plus_one'
+    when Actions::D_PLUS_ONE
       { c: state[:c], d: state[:d]+1 }
     else
       state
@@ -26,12 +28,12 @@ module Reducers
   }
 
   R_EF = -> (state, action) {
-    state ||= { e: 0, f: 0 }
-
     case action[:type]
-    when 'e_plus_one'
+    when :INITIALIZE
+      { e: 0, f: 0 }
+    when Actions::E_PLUS_ONE
       { e: state[:e]+1, f: state[:f] }
-    when 'f_plus_one'
+    when Actions::F_PLUS_ONE
       { e: state[:e], f: state[:f]+1 }
     else
       state
@@ -39,12 +41,12 @@ module Reducers
   }
 
   R_GH = -> (state, action) {
-    state ||= { g: 0, h: 0 }
-
     case action[:type]
-    when 'g_plus_one'
+    when :INITIALIZE
+      { g: 0, h: 0 }
+    when Actions::G_PLUS_ONE
       { g: state[:g]+1, h: state[:h] }
-    when 'h_plus_one'
+    when Actions::H_PLUS_ONE
       { g: state[:g], h: state[:h]+1 }
     else
       state
